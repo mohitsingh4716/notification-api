@@ -3,15 +3,18 @@ const express = require('express');
 const app= express();
 
 const cors= require("cors");
+const dotenv= require("dotenv");
 
-const PORT=3000;
+const notificationRoutes= require("./routes/notification");
+
+dotenv.config();
+
+const PORT= process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req,res)=>{
-    res.send("Hello Mohit");
-})
+app.use("/api", notificationRoutes);
 
 
 app.listen(PORT, ()=>{
