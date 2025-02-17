@@ -1,11 +1,10 @@
 import express from "express";
+import { sendNotification } from "../controllers/notifyController.js";
+
+
 
 const router= express.Router();
 
-router.get("/notification", (req, res)=>{
-    res.json({
-        message: "notification routes"
-    })
-})
+router.post("/notification", sendNotification)
 
 export default router;
