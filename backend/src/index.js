@@ -1,11 +1,11 @@
-const express = require('express');
+import express from "express";
 
 const app= express();
 
-const cors= require("cors");
-const dotenv= require("dotenv");
+import cors from "cors";
+import dotenv from "dotenv";
 
-const notificationRoutes= require("./routes/notification");
+import notificationRoutes from "./routes/notification.js";
 
 dotenv.config();
 
