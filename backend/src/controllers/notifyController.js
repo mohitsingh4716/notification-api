@@ -1,4 +1,8 @@
 import prisma from "../../utils/client.js";
+import { sendemailUsingNodeMailer } from "../services/sendemail.js";
+
+import { sendWhatsappMsg } from "../services/whatsapp.js";
+
 import { bookingValidation } from "../validation/bookingValidation.js";
 
 export const sendNotification = async (req, res) => {
@@ -26,6 +30,14 @@ export const sendNotification = async (req, res) => {
                 partner_contact
             }
         });
+
+        const message = `Hello ${customer_name},\n\n  Congratulations!  \n\nYour booking (ID: ${booking_id}) is confirmed.\n\n🔹 Check-in: ${checkin_date}\n🔹 Check-out: ${checkout_date}\n🔹 Item: ${item_type}\n\nThank you for choosing us!`;
+
+        // await sendWhatsappMsg("+917091010902", message);
+
+        await sendemailUsingNodeMailer(notification);
+
+      
 
         return res.status(200).json({
             status: 'success',
