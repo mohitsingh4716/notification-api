@@ -1,7 +1,7 @@
 import prisma from "../../utils/client.js";
 import { sendemailUsingNodeMailer } from "../services/sendemail.js";
 
-import { sendWhatsappMsg } from "../services/whatsapp.js";
+// import { sendWhatsappMsg } from "../services/whatsapp.js";
 
 import { bookingValidation } from "../validation/bookingValidation.js";
 
@@ -31,11 +31,23 @@ export const sendNotification = async (req, res) => {
             }
         });
 
-        const message = `Hello ${customer_name},\n\n  Congratulations!  \n\nYour booking (ID: ${booking_id}) is confirmed.\n\n🔹 Check-in: ${checkin_date}\n🔹 Check-out: ${checkout_date}\n🔹 Item: ${item_type}\n\nThank you for choosing us!`;
+        // const message = `Hello ${customer_name},\n\n  Congratulations!  \n\nYour booking (ID: ${booking_id}) is confirmed.\n\n🔹 Check-in: ${checkin_date}\n🔹 Check-out: ${checkout_date}\n🔹 Item: ${item_type}\n\nThank you for choosing us!`;
 
-        // await sendWhatsappMsg("+917091010902", message);
+        // await sendWhatsappMsg("+917091010921", message);
 
-        await sendemailUsingNodeMailer(notification);
+        const recipientEmail= [
+            {email:process.env.ADMIN_EMAIL},
+            {email:process.env.PARTNER_EMAIL},
+            {email:"shivamkumarsingh2214@gmail.com"}
+
+        ]
+
+        await Promise.all(
+            recipientEmail.map(({email})=>{
+                sendemailUsingNodeMailer(notification, email);
+            })
+        )
+
 
       
 

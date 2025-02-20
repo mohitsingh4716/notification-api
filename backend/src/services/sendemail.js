@@ -3,10 +3,13 @@ import Mailgen from 'mailgen';
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const sendemailUsingNodeMailer = async (bookingDetails) => {
+export const sendemailUsingNodeMailer = async (bookingDetails, email) => {
 
     const {customer_name, booking_id, booking_date, checkin_date, checkout_date, item_type, item_details, customer_contact, partner_contact}= bookingDetails;
 
+    const booking_date_formatted = formatDate(booking_date);
+    const checkin_date_formatted = formatDate(checkin_date);
+    const checkout_date_formatted = formatDate(checkout_date);
 
     const config = {
         service: 'gmail',
@@ -31,12 +34,13 @@ export const sendemailUsingNodeMailer = async (bookingDetails) => {
     const emailtemplate = {
         body: {
             name: customer_name,
-            intro: `Thank you for using Teesta Travel online facility.We are pleased to inform you that your booking ${booking_id} is confirmed. \n\n Your booking details are indicated below.`,
+            intro: `Thank you for using Teesta Travel online facility. We are pleased to inform you that your booking ${booking_id} is confirmed. \n\nYour booking details are indicated below.`,
             table: {
                 data: [
-                    { key: 'Check-in', value: checkin_date },
-                    { key: 'Check-out', value: checkout_date },
-                    { key: 'Booking Date', value: booking_date },
+                    { key: 'Booking Date', value: booking_date_formatted },
+                    { key: 'Check-in', value: checkin_date_formatted },
+                    { key: 'Check-out', value: checkout_date_formatted },
+                    
                     { key: 'Item Type', value: item_type },
                     { key: 'Item Details', value: item_details },
                     { key: 'Customer Contact', value: customer_contact },
@@ -49,7 +53,7 @@ export const sendemailUsingNodeMailer = async (bookingDetails) => {
                     }
                 }
             },
-            outro: `Sincerely awaiting your visit,\n\n Teesta Travel`
+            outro: "Sincerely awaiting your visit"
         }
     };
 
@@ -58,8 +62,8 @@ export const sendemailUsingNodeMailer = async (bookingDetails) => {
 
     let mailOptions = {
         from: `"Mohit Kumar" <${process.env.EMAIL}>`,  
-        to:"mohitsingh4716@gmail.com",
-        subject: `Booking Confirmation on Teesta Travel at ${checkin_date}`,    
+        to:email,   
+        subject: `Booking Confirmation on Teesta Travel ,  ${checkin_date_formatted} to ${checkout_date_formatted}`,    
         html: emailHtml,
     };
     
@@ -71,3 +75,9 @@ export const sendemailUsingNodeMailer = async (bookingDetails) => {
         }  
     });
 };
+
+const formatDate = (date) =>{
+    return new Date(date)
+        .toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+        .replace(/ /g, '-');
+}
