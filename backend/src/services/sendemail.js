@@ -34,7 +34,8 @@ export const sendemailUsingNodeMailer = async (bookingDetails, email) => {
     const emailtemplate = {
         body: {
             name: customer_name,
-            intro: `Thank you for using Teesta Travel online facility. We are pleased to inform you that your booking ${booking_id} is confirmed. \n\nYour booking details are indicated below.`,
+            intro: [`Thank you for using Teesta Travel online facility. We are pleased to inform you that your booking ${booking_id} is confirmed.`,
+                     "Your booking details are indicated below." ],
             table: {
                 data: [
                     { key: 'Booking Date', value: booking_date_formatted },
@@ -61,7 +62,7 @@ export const sendemailUsingNodeMailer = async (bookingDetails, email) => {
     
 
     let mailOptions = {
-        from: `"Mohit Kumar" <${process.env.EMAIL}>`,  
+        from: `"Teesta Travel" <${process.env.EMAIL}>`, 
         to:email,   
         subject: `Booking Confirmation on Teesta Travel ,  ${checkin_date_formatted} to ${checkout_date_formatted}`,    
         html: emailHtml,
