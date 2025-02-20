@@ -5,6 +5,7 @@ import { bookingSchema } from '../validation/InputValidation'
 import { Card, InputForm, SelectForm } from '../components/InputForm'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
+import axios from 'axios'
 
 export const BookingDetails = () => {
 
@@ -14,14 +15,27 @@ export const BookingDetails = () => {
 
      const [loading, setLoading] = useState(false);
 
-     const onSubmit= (data)=>{
+     const onSubmit= async (data)=>{
         setLoading(true);
-        setTimeout(()=>{
+
+        try {
+
+           const response= await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/notify-booking`,data);
+
+            console.log(response.data);
             toast.success("Booking confirmed successfully!");
-            console.log("Booking Data:", data);
             setLoading(false);
             reset();
-        },2000)
+
+            
+        } catch (error) {
+            console.log(error);
+            toast.error("Error in booking confirmation"); 
+            
+        }
+
+        setLoading(false);
+
      }
 
 
