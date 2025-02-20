@@ -13,33 +13,34 @@ export const sendNotification = async (req, res) => {
             return res.status(411).json({message: 'Invalid Input data'});
         }
 
-        const {customer_name, booking_id, booking_date, checkin_date, checkout_date, item_type, item_details, customer_contact, partner_contact}= body;
+        const {name, email ,checkin_date, checkout_date, item_type, item_details, phone ,amount}= body;
 
         const notification = await prisma.notification.create({
             data: {
-                customer_name,
-                booking_id,
-                booking_date: new Date(booking_date),
+                customer_name:name,
+                customer_email:email,
+                booking_date: new Date(),
                 checkin_date: new Date(checkin_date),
                 checkout_date: new Date(checkout_date),
                 item_type,
                 item_details,
-                customer_contact,
-                partner_contact
+                customer_contact:phone,
+                amount:parseInt(amount, 10)
             }
         });
 
         const recipientEmail= [
             {email:process.env.ADMIN_EMAIL},
             {email:process.env.PARTNER_EMAIL},
-            {email:"shivamkumarsingh2214@gmail.com"}
+            {email:email}
 
         ]
 
         await Promise.all(
             recipientEmail.map(({email})=>{
-                sendemailUsingNodeMailer(notification, email);
-            })
+                sendemailUsingNodeMailer(notification, email)
+            }
+            )
         )
 
 

@@ -5,7 +5,7 @@ dotenv.config();
 
 export const sendemailUsingNodeMailer = async (bookingDetails, email) => {
 
-    const {customer_name, booking_id, booking_date, checkin_date, checkout_date, item_type, item_details, customer_contact, partner_contact}= bookingDetails;
+    const {customer_name, booking_date, checkin_date, checkout_date, item_type, item_details, customer_contact, amount}= bookingDetails;
 
     const booking_date_formatted = formatDate(booking_date);
     const checkin_date_formatted = formatDate(checkin_date);
@@ -30,6 +30,7 @@ export const sendemailUsingNodeMailer = async (bookingDetails, email) => {
             link: 'https://teesta.travel/'
         }
     });
+   const booking_id = "TSM234121";
 
     const emailtemplate = {
         body: {
@@ -45,7 +46,7 @@ export const sendemailUsingNodeMailer = async (bookingDetails, email) => {
                     { key: 'Item Type', value: item_type },
                     { key: 'Item Details', value: item_details },
                     { key: 'Customer Contact', value: customer_contact },
-                    { key: 'Amount', value: "₹50000" }
+                    { key: 'Amount', value: amount }
                 ],
                 columns: {
                     customWidth: {

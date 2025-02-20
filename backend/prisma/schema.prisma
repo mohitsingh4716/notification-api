@@ -17,14 +17,14 @@ datasource db {
 model Notification {
   id                String @id @default(cuid())
   customer_name     String
-  booking_id        String
+  customer_email    String
   booking_date      DateTime
   checkin_date     DateTime
   checkout_date    DateTime
   item_type         String
   item_details      String
   customer_contact  String
-  partner_contact   String
+  amount            Int 
 
   createdAt DateTime @default(now())
 
